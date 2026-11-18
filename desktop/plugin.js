@@ -842,15 +842,6 @@ function Panel({ t, A, B, byK, hidden, generated, onPick, onClose }) {
       "header",
       null,
       h3("h2", null, t.t),
-      host2?.navigate ? h3(
-        Tip2,
-        { label: "Open in Crew: the card page of this card, on the board it lives on (the crew plugin's route)" },
-        h3(
-          Button2,
-          { size: "icon-xs", variant: "ghost", onClick: () => host2.navigate(crewCard), "aria-label": "Open in Crew" },
-          h3(Codicon2, { name: "organization" })
-        )
-      ) : null,
       h3(Tip2, { label: "Close (Esc)" }, h3(Button2, { size: "icon-xs", variant: "ghost", onClick: onClose, "aria-label": "Close" }, h3(Codicon2, { name: "close" })))
     ),
     h3(
@@ -868,6 +859,18 @@ function Panel({ t, A, B, byK, hidden, generated, onPick, onClose }) {
         ["Completed", fmt(t.d)],
         ["Failures", t.f || ""]
       ] }),
+      // The cross-link into Crew: a labeled button at the top of the task detail, drawn only where
+      // the shell brings a navigator (absent on a shell without one).
+      host2?.navigate ? h3(
+        "div",
+        { style: { display: "flex", gap: 6, margin: "2px 0 8px" } },
+        h3(
+          Button2,
+          { size: "xs", variant: "outline", onClick: () => host2.navigate(crewCard) },
+          h3(Codicon2, { name: "organization" }),
+          " Open in Crew"
+        )
+      ) : null,
       A.size ? h3(Fragment, null, h3("h3", null, `Upstream (${A.size})`), ...sortK(A).map((k) => h3(Row, { key: k, t: byK.get(k), onPick }))) : null,
       B.size ? h3(Fragment, null, h3("h3", null, `Downstream (${B.size})`), ...sortK(B).map((k) => h3(Row, { key: k, t: byK.get(k), onPick }))) : null,
       !A.size && !B.size ? h3(Fragment, null, h3("h3", null, "Linked tasks"), h3("div", { style: { color: TONE.muted } }, t.hx ? "None shown." : "None: this task has no parent or child links.")) : null,
