@@ -1,5 +1,5 @@
 // desktop/src/index.js
-import { host as host2, ROUTES_AREA, SIDEBAR_NAV_AREA, PALETTE_AREA } from "@hermes/plugin-sdk";
+import { host as host3, ROUTES_AREA, SIDEBAR_NAV_AREA, PALETTE_AREA } from "@hermes/plugin-sdk";
 import { createElement as h5 } from "react";
 
 // desktop/src/kit/live.js
@@ -619,6 +619,7 @@ import {
   SelectTrigger,
   SelectValue,
   Tip as Tip2,
+  host as host2,
   useValue as useValue3
 } from "@hermes/plugin-sdk";
 import { createElement as h3, Fragment } from "react";
@@ -841,15 +842,15 @@ function Panel({ t, A, B, byK, hidden, generated, onPick, onClose }) {
       "header",
       null,
       h3("h2", null, t.t),
-      h3(
+      host2?.navigate ? h3(
         Tip2,
         { label: "Open in Crew: the card page of this card, on the board it lives on (the crew plugin's route)" },
         h3(
           Button2,
-          { size: "icon-xs", variant: "ghost", onClick: () => host.navigate?.(crewCard), "aria-label": "Open in Crew" },
+          { size: "icon-xs", variant: "ghost", onClick: () => host2.navigate(crewCard), "aria-label": "Open in Crew" },
           h3(Codicon2, { name: "organization" })
         )
-      ),
+      ) : null,
       h3(Tip2, { label: "Close (Esc)" }, h3(Button2, { size: "icon-xs", variant: "ghost", onClick: onClose, "aria-label": "Close" }, h3(Codicon2, { name: "close" })))
     ),
     h3(
@@ -1417,7 +1418,7 @@ var index_default = {
       setApi(null);
     });
     const openGraph = () => {
-      host2.navigate(route.on() ? window.location.hash.replace(/^#/, "") : PATH);
+      host3.navigate(route.on() ? window.location.hash.replace(/^#/, "") : PATH);
     };
     ctx.registerMany([
       { id: "page", area: ROUTES_AREA, data: { path: PATH }, render: () => h5(GraphPage) },

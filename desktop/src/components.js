@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
   Tip,
+  host,
   useValue
 } from '@hermes/plugin-sdk'
 import { createElement as h, Fragment } from 'react'
@@ -125,9 +126,18 @@ export function Panel({ t, A, B, byK, hidden, generated, onPick, onClose }) {
   const m = meta(t.s), run = curRun(t)
   const sortK = s => [...s].sort((a, b) => (byK.get(a).c || 0) - (byK.get(b).c || 0))
   const cli = `hermes kanban --board ${t.b} show ${t.id}`
+  // The jump into Crew's own page for this card: the crew plugin's route, with the board it lives on
+  // so the landing page opens that board's view ('/crew?card=<id>&board=<slug>', the deep-link shape
+  // crew's own notifications use). Drawn only where the shell brings a navigator.
+  const crewCard = '/crew?card=' + encodeURIComponent(t.id) + '&board=' + encodeURIComponent(t.b)
   return h('aside', { className: 'kg-panel', onClick: e => e.stopPropagation(), onPointerDown: e => e.stopPropagation() },
     h('header', null,
       h('h2', null, t.t),
+      host?.navigate
+        ? h(Tip, { label: 'Open in Crew: the card page of this card, on the board it lives on (the crew plugin\'s route)' },
+            h(Button, { size: 'icon-xs', variant: 'ghost', onClick: () => host.navigate(crewCard), 'aria-label': 'Open in Crew' },
+              h(Codicon, { name: 'organization' })))
+        : null,
       h(Tip, { label: 'Close (Esc)' }, h(Button, { size: 'icon-xs', variant: 'ghost', onClick: onClose, 'aria-label': 'Close' }, h(Codicon, { name: 'close' })))),
     h('div', { className: 'kg-pbody' },
       h(KV, { rows: [
