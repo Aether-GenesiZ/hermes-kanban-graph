@@ -833,6 +833,7 @@ function Panel({ t, A, B, byK, hidden, generated, onPick, onClose }) {
   const m = meta(t.s), run = curRun(t);
   const sortK = (s) => [...s].sort((a, b) => (byK.get(a).c || 0) - (byK.get(b).c || 0));
   const cli = `hermes kanban --board ${t.b} show ${t.id}`;
+  const crewCard = "/crew?card=" + encodeURIComponent(t.id) + "&board=" + encodeURIComponent(t.b);
   return h3(
     "aside",
     { className: "kg-panel", onClick: (e) => e.stopPropagation(), onPointerDown: (e) => e.stopPropagation() },
@@ -840,6 +841,15 @@ function Panel({ t, A, B, byK, hidden, generated, onPick, onClose }) {
       "header",
       null,
       h3("h2", null, t.t),
+      h3(
+        Tip2,
+        { label: "Open in Crew: the card page of this card, on the board it lives on (the crew plugin's route)" },
+        h3(
+          Button2,
+          { size: "icon-xs", variant: "ghost", onClick: () => host.navigate?.(crewCard), "aria-label": "Open in Crew" },
+          h3(Codicon2, { name: "organization" })
+        )
+      ),
       h3(Tip2, { label: "Close (Esc)" }, h3(Button2, { size: "icon-xs", variant: "ghost", onClick: onClose, "aria-label": "Close" }, h3(Codicon2, { name: "close" })))
     ),
     h3(
